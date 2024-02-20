@@ -1,0 +1,17 @@
+import { Layout } from "antd";
+import { FC } from "react";
+
+const headerStyle: React.CSSProperties = {
+  textAlign: "center",
+  color: "#fff",
+  height: 60,
+  paddingInline: 48,
+  lineHeight: "64px",
+  backgroundColor: "#4096ff",
+};
+
+const AppHeader: FC = () => {
+  return <Layout.Header style={headerStyle}>Header</Layout.Header>;
+};
+
+export default AppHeader;
