@@ -1,5 +1,7 @@
-export const cryptoData = {
-  result: [
+import IAssets from "./types/IAssets";
+import ICrypto from "./types/ICrypto";
+
+export const cryptoData:ICrypto[] = [
   {
     id: "bitcoin",
     icon: "https://static.coinstats.app/coins/1650455588819.png",
@@ -18,6 +20,8 @@ export const cryptoData = {
     redditUrl: "https://www.reddit.com/r/Bitcoin/",
     websiteUrl: "https://bitcoin.org",
     twitterUrl: "https://twitter.com/bitcoin",
+    contractAddress: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    decimals: 18,
     explorers: [
       "https://mempool.space/",
       "https://blockchair.com/bitcoin/",
@@ -588,5 +592,25 @@ export const cryptoData = {
       "https://avascan.info/blockchain/c/address/0x8ebaf22b6f053dffeaf46f4dd9efa95d89ba8580/token",
     ],
   },
-]
-}
+];
+
+export const cryptoAssets:IAssets[] = [
+  {
+    id: 'bitcoin',
+    amount: 0.02,
+    price: 26244,
+    date: new Date()
+  },
+  {
+    id: 'ethereum',
+    amount: 5,
+    price: 3400,
+    date: new Date()
+  },
+  {
+    id: 'dogecoin',
+    amount: 10000,
+    price: 0.073,
+    date: new Date()
+  }
+] 
