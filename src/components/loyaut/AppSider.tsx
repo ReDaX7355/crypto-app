@@ -1,28 +1,53 @@
-import { Card, Layout, List, Spin, Statistic, Tag, Typography } from "antd";
+import {
+  Card,
+  Flex,
+  Layout,
+  List,
+  Skeleton,
+  Statistic,
+  Tag,
+  Typography,
+} from "antd";
 import { FC, useEffect, useState } from "react";
 import ICrypto from "../../types/ICrypto";
 import IAssets from "../../types/IAssets";
 import { capitilize, getPercentFromTwoNumbers } from "../../utils";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../context/store";
+import { assetsLoading, assetsRecived } from "../../context/assetsSlice";
+import { fetchAssets } from "../../api";
 
 const siderStyle: React.CSSProperties = {
   padding: "1rem",
 };
 
+const skeletonStyle: React.CSSProperties = {
+  backgroundColor: "white",
+  padding: "40px 20px",
+  borderRadius: 10,
+};
+
 const AppSider: FC = () => {
-  const data = useSelector((state: RootState) => state.data);
-  const [loading, setLoading] = useState(false);
-  const [assets, setAssets] = useState<IAssets[] | []>([]);
+  const { crypto, assets } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+  const [assetsData, setAssetsData] = useState<IAssets[] | []>([]);
 
   useEffect(() => {
     async function preload() {
-      setLoading(true);
-      setAssets(
-        data.assets.map((asset) => {
+      dispatch(assetsLoading());
+      dispatch(assetsRecived(await fetchAssets()));
+    }
+
+    preload();
+  }, [dispatch]);
+
+  useEffect(() => {
+    async function preload() {
+      setAssetsData(
+        assets.data.map((asset) => {
           const coin =
-            data.crypto.find((item) => item.id === asset.id) || ({} as ICrypto);
+            crypto.data.find((item) => item.id === asset.id) || ({} as ICrypto);
           return {
             grow: asset.price < coin.price,
             growPercent: getPercentFromTwoNumbers(asset.price, coin.price),
@@ -32,20 +57,26 @@ const AppSider: FC = () => {
           };
         })
       );
-
-      setLoading(false);
     }
 
     preload();
-  }, [data]);
+  }, [crypto, assets]);
 
-  if (loading) {
-    return <Spin fullscreen />;
+  if (assets.loading === "pending") {
+    return (
+      <Layout.Sider width="25%" style={siderStyle}>
+        <Flex vertical gap={20} style={{ height: "100%" }}>
+          <Skeleton active style={skeletonStyle} />
+          <Skeleton active style={skeletonStyle} />
+          <Skeleton active style={skeletonStyle} />
+        </Flex>
+      </Layout.Sider>
+    );
   }
 
   return (
     <Layout.Sider width="25%" style={siderStyle}>
-      {assets.map((asset) => (
+      {assetsData.map((asset) => (
         <Card key={asset.id} style={{ marginBottom: "1rem" }}>
           <Statistic
             title={capitilize(asset.id)}
@@ -70,11 +101,6 @@ const AppSider: FC = () => {
                 suffix: "",
                 isPlane: true,
               },
-              // {
-              //   title: "Diffrence",
-              //   value: asset.growPercent,
-              //   suffix: "%",
-              // },
             ]}
             renderItem={(item) => (
               <List.Item>

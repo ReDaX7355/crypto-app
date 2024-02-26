@@ -27,10 +27,10 @@ const headerStyle: React.CSSProperties = {
 };
 
 const AppHeader: FC = () => {
-  const data = useSelector((state: RootState) => state.data);
+  const crypto = useSelector((state: RootState) => state.crypto);
   const [onOpenSelect, setOnOpenSelect] = useState(false);
   const [onOpenModal, setOnOpenModal] = useState(false);
-  const [onOpenDrawer, setOnOpenDrawer] = useState(false);
+  const [onOpenDrawer, setOnOpenDrawer] = useState(true);
   const [currentCoin, setCurrentCoin] = useState<ICrypto>();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const AppHeader: FC = () => {
   };
 
   const handleSelect = (value: string) => {
-    const coin = data.crypto.find((item) => item.id === value);
+    const coin = crypto.data.find((item) => item.id === value);
     setCurrentCoin(coin);
     setOnOpenModal(true);
   };
@@ -71,7 +71,7 @@ const AppHeader: FC = () => {
           style={{ width: 200 }}
           onClick={handleChangeSelect}
           onSelect={handleSelect}
-          options={data.crypto.map((item) => {
+          options={crypto.data.map((item) => {
             return {
               icon: item.icon,
               value: item.id,
@@ -80,13 +80,14 @@ const AppHeader: FC = () => {
           })}
           optionRender={(option) => (
             <Space>
-              <div style={{ maxWidth: "20px" }}>
-                <Image
-                  width="100%"
-                  src={option.data.icon}
-                  alt={option.data.label}
-                />
-              </div>
+              <img
+                style={{
+                  width: 20,
+                  paddingTop: 6,
+                }}
+                src={option.data.icon}
+                alt={option.data.label}
+              />
               {option.data.label}
             </Space>
           )}
@@ -109,6 +110,7 @@ const AppHeader: FC = () => {
         width={500}
         open={onOpenDrawer}
         onClose={() => setOnOpenDrawer(false)}
+        destroyOnClose
       >
         <AddAssetForm />
       </Drawer>

@@ -1,11 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
-import dataSlice from './dataSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import cryptoSlice from "./cryptoSlice";
+import assetsSlice from "./assetsSlice";
 
 export const store = configureStore({
   reducer: {
-    data: dataSlice,
+    crypto: cryptoSlice,
+    assets: assetsSlice,
   },
-})
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
