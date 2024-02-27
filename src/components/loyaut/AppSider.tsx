@@ -7,40 +7,43 @@ import {
   Statistic,
   Tag,
   Typography,
-} from "antd";
-import { FC, useEffect, useState } from "react";
-import ICrypto from "../../types/ICrypto";
-import IAssets from "../../types/IAssets";
-import { capitilize, getPercentFromTwoNumbers } from "../../utils";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../context/store";
-import { assetsLoading, assetsRecived } from "../../context/assetsSlice";
-import { fetchAssets } from "../../api";
+} from 'antd';
+import { FC, useEffect, useState } from 'react';
+import ICrypto from '../../types/ICrypto';
+import IAssets from '../../types/IAssets';
+import { capitilize, getPercentFromTwoNumbers } from '../../utils';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../context/store';
+import { loadAssets } from '../../context/assetsSlice';
 
 const siderStyle: React.CSSProperties = {
-  padding: "1rem",
+  padding: '1rem',
 };
 
 const skeletonStyle: React.CSSProperties = {
-  backgroundColor: "white",
-  padding: "40px 20px",
+  backgroundColor: 'white',
+  padding: '40px 20px',
   borderRadius: 10,
 };
 
 const AppSider: FC = () => {
-  const { crypto, assets } = useSelector((state: RootState) => state);
-  const dispatch = useDispatch();
+  const { crypto, assets } = useSelector((state: RootState) => ({
+    crypto: state.crypto,
+    assets: state.assets,
+  }));
+  const dispatch = useDispatch<AppDispatch>();
   const [assetsData, setAssetsData] = useState<IAssets[] | []>([]);
 
   useEffect(() => {
     async function preload() {
-      dispatch(assetsLoading());
-      dispatch(assetsRecived(await fetchAssets()));
+      dispatch(loadAssets());
     }
 
     preload();
   }, [dispatch]);
+
+  console.log(assetsData);
 
   useEffect(() => {
     async function preload() {
@@ -62,10 +65,10 @@ const AppSider: FC = () => {
     preload();
   }, [crypto, assets]);
 
-  if (assets.loading === "pending") {
+  if (assets.loading === 'pending') {
     return (
       <Layout.Sider width="25%" style={siderStyle}>
-        <Flex vertical gap={20} style={{ height: "100%" }}>
+        <Flex vertical gap={20} style={{ height: '100%' }}>
           <Skeleton active style={skeletonStyle} />
           <Skeleton active style={skeletonStyle} />
           <Skeleton active style={skeletonStyle} />
@@ -77,12 +80,12 @@ const AppSider: FC = () => {
   return (
     <Layout.Sider width="25%" style={siderStyle}>
       {assetsData.map((asset) => (
-        <Card key={asset.id} style={{ marginBottom: "1rem" }}>
+        <Card key={asset.id} style={{ marginBottom: '1rem' }}>
           <Statistic
             title={capitilize(asset.id)}
             value={asset.totalAmount}
             precision={2}
-            valueStyle={{ color: asset.grow ? "#3f8600" : "#cf1322" }}
+            valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
             prefix={asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
             suffix="$"
           ></Statistic>
@@ -90,15 +93,15 @@ const AppSider: FC = () => {
             size="small"
             dataSource={[
               {
-                title: "Total Profit",
+                title: 'Total Profit',
                 value: asset.totalProfit,
-                suffix: "$",
+                suffix: '$',
                 withtag: true,
               },
               {
-                title: "Amount",
+                title: 'Amount',
                 value: asset.amount,
-                suffix: "",
+                suffix: '',
                 isPlane: true,
               },
             ]}
@@ -106,9 +109,9 @@ const AppSider: FC = () => {
               <List.Item>
                 <span>{item.title}</span>
                 <span>
-                  <Typography.Text type={asset.grow ? "success" : "danger"}>
+                  <Typography.Text type={asset.grow ? 'success' : 'danger'}>
                     {item.withtag && (
-                      <Tag color={asset.grow ? "green" : "red"}>
+                      <Tag color={asset.grow ? 'green' : 'red'}>
                         {asset.growPercent}%
                       </Tag>
                     )}

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import ICrypto from "../types/ICrypto";
+import { FC, useState } from 'react';
+import ICrypto from '../types/ICrypto';
 import {
   Button,
   DatePicker,
@@ -7,18 +7,25 @@ import {
   Flex,
   Form,
   InputNumber,
+  Result,
   Select,
   Space,
   Typography,
-} from "antd";
-import { useSelector } from "react-redux";
-import { RootState } from "../context/store";
+} from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../context/store';
+import { addAsset } from '../context/assetsSlice';
+import { getPercentFromTwoNumbers } from '../utils';
+
+interface AddAssetFormProps {
+  onCloseDrawer: () => void;
+}
 
 type FieldType = {
   amount?: number;
-  price?: string;
+  price?: number;
   datetime?: string;
-  total?: string;
+  total?: number;
 };
 
 const validateMessages = {
@@ -31,28 +38,80 @@ const validateMessages = {
   },
 };
 
-const AddAssetForm = () => {
+const AddAssetForm: FC<AddAssetFormProps> = ({ onCloseDrawer }) => {
   const crypto = useSelector((state: RootState) => state.crypto);
+  const dispatch = useDispatch();
+
   const [coin, setCoin] = useState<ICrypto>();
+  const [addCompleted, setAddCompleted] = useState(false);
+
   const [form] = Form.useForm();
 
   const onFinish = (values: FieldType) => {
-    console.log(values);
+    values.price = values.price || 0;
+    values.amount = values.amount || 0;
+
+    const newAsset = {
+      id: coin?.name,
+      amount: values.amount,
+      price: values.price,
+      totalAmount: values.total && +values.total,
+      date: values?.datetime
+        ? new Date(values.datetime).toLocaleString()
+        : undefined,
+      grow: coin?.price && +values.price < coin.price,
+      growPercent: coin?.price
+        ? getPercentFromTwoNumbers(values.price, coin.price)
+        : undefined,
+      totalProfit: coin?.price
+        ? values.amount * coin.price - values.amount * values.price
+        : undefined,
+    };
+
+    dispatch(addAsset(newAsset));
+
+    setAddCompleted(true);
+  };
+
+  const handleAddMore = () => {
+    setCoin(undefined);
+    setAddCompleted(false);
+    form.resetFields();
   };
 
   const handleAmountChange = (value: number | null) => {
     if (value !== null) {
-      form.setFieldValue("total", (value * (coin?.price || 0)).toFixed(2));
+      form.setFieldValue('total', (value * (coin?.price || 0)).toFixed(2));
     } else {
-      form.setFieldValue("total", 0);
+      form.setFieldValue('total', 0);
     }
   };
+
+  if (addCompleted) {
+    return (
+      <Result
+        status="success"
+        title="New Asset added"
+        subTitle={`Added ${form.getFieldValue('amount')} ${
+          coin?.name
+        } on your wallet!`}
+        extra={[
+          <Button type="default" key="close" onClick={onCloseDrawer}>
+            Close
+          </Button>,
+          <Button type="primary" key="close" onClick={handleAddMore}>
+            Add more
+          </Button>,
+        ]}
+      />
+    );
+  }
 
   if (!coin) {
     return (
       <Select
         placeholder={`Select coin (press "/")`}
-        style={{ width: "100%" }}
+        style={{ width: '100%' }}
         onSelect={(value) =>
           setCoin(crypto.data.find((item) => item.id == value))
         }
@@ -65,7 +124,7 @@ const AddAssetForm = () => {
         })}
         optionRender={(option) => (
           <Space>
-            <div style={{ maxWidth: "20px" }}>
+            <div style={{ maxWidth: '20px' }}>
               <img
                 style={{
                   width: 20,
@@ -99,7 +158,7 @@ const AddAssetForm = () => {
         <img width="40px" height="40px" src={coin.icon} alt={coin.name} />
         <Typography.Title level={2}>{coin.name}</Typography.Title>
       </Flex>
-      <Divider style={{ margin: "10px 0 24px" }} />
+      <Divider style={{ margin: '10px 0 24px' }} />
 
       <Form.Item<FieldType>
         label="Amount"
@@ -107,28 +166,28 @@ const AddAssetForm = () => {
         rules={[
           {
             required: true,
-            type: "number",
+            type: 'number',
             min: 0,
             max: +coin.marketCap.toFixed(0),
           },
         ]}
       >
-        <InputNumber onChange={handleAmountChange} style={{ width: "100%" }} />
+        <InputNumber onChange={handleAmountChange} style={{ width: '100%' }} />
       </Form.Item>
 
       <Form.Item<FieldType> label="Price" name="price">
-        <InputNumber disabled style={{ width: "100%" }} />
+        <InputNumber disabled style={{ width: '100%' }} />
       </Form.Item>
 
       <Form.Item<FieldType> label="Date & Time" name="datetime">
-        <DatePicker showTime style={{ width: "100%" }} />
+        <DatePicker showTime style={{ width: '100%' }} />
       </Form.Item>
 
       <Form.Item<FieldType> label="Total" name="total">
         <InputNumber
           placeholder="Enter coin amount"
           disabled
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
         />
       </Form.Item>
 
