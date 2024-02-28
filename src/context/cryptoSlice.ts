@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ICrypto from "../types/ICrypto";
+import { fakeFetchCryptoData } from "../api";
 
 interface CryptoState {
   loading: string;
@@ -14,21 +15,26 @@ const initialState: CryptoState = {
 export const cryptoSlice = createSlice({
   name: "crypto",
   initialState,
-  reducers: {
-    cryptoLoading: (state) => {
-      if (state.loading == "idle") {
-        state.loading = "pending";
-      }
-    },
-    cryptoRecived: (state, action) => {
-      if (state.loading == "pending") {
-        state.data = action.payload;
-        state.loading = "idle";
-      }
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadCrypto.pending, (state) => {
+        if (state.loading === "idle") {
+          state.loading = "pending";
+        }
+      })
+      .addCase(loadCrypto.fulfilled, (state, action) => {
+        if (state.loading === "pending") {
+          state.data = action.payload;
+          state.loading = "idle";
+        }
+      });
   },
 });
 
-export const { cryptoLoading, cryptoRecived } = cryptoSlice.actions;
+export const loadCrypto = createAsyncThunk("crypto/loadCrypto", async () => {
+  const response = await fakeFetchCryptoData();
+  return response;
+});
 
 export default cryptoSlice.reducer;

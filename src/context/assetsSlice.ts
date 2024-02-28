@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import IAssets from '../types/IAssets';
-import { fetchAssets } from '../api';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import IAssets from "../types/IAssets";
+import { fetchAssets } from "../api";
 
 interface AssetsState {
   loading: string;
@@ -8,12 +8,12 @@ interface AssetsState {
 }
 
 const initialState: AssetsState = {
-  loading: 'idle',
+  loading: "idle",
   data: [],
 };
 
 export const assetsSlice = createSlice({
-  name: 'assets',
+  name: "assets",
   initialState,
   reducers: {
     addAsset: (state, action) => {
@@ -23,20 +23,20 @@ export const assetsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loadAssets.pending, (state) => {
-        if (state.loading == 'idle') {
-          state.loading = 'pending';
+        if (state.loading == "idle") {
+          state.loading = "pending";
         }
       })
       .addCase(loadAssets.fulfilled, (state, action) => {
-        if (state.loading == 'pending') {
+        if (state.loading == "pending") {
           state.data = action.payload;
-          state.loading = 'idle';
+          state.loading = "idle";
         }
       });
   },
 });
 
-export const loadAssets = createAsyncThunk('assets/loadAssets', async () => {
+export const loadAssets = createAsyncThunk("assets/loadAssets", async () => {
   const response = await fetchAssets();
   return response;
 });
