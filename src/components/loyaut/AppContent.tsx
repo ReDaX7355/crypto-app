@@ -1,15 +1,45 @@
-import { Layout } from "antd";
+import { Layout, Typography } from "antd";
 import { FC } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../context/store";
 
 const contentStyle: React.CSSProperties = {
-  textAlign: "center",
+  padding: "1rem",
   minHeight: "calc(100vh - 60px)",
   color: "#fff",
   backgroundColor: "#001529",
 };
 
 const AppContent: FC = () => {
-  return <Layout.Content style={contentStyle}>Content</Layout.Content>;
+  const { assets, crypto } = useSelector((state: RootState) => state);
+
+  const cryptoPriceMap = crypto.data.reduce(
+    (acc: { [key: string]: number }, coin) => {
+      acc[coin.id] = coin.price;
+      return acc;
+    },
+    {}
+  );
+
+  return (
+    <Layout.Content style={contentStyle}>
+      {assets.data.length != 0 && (
+        <Typography.Title level={3} style={{ color: "#fff" }}>
+          Portfolio:{" "}
+          {assets.data
+            .map((asset) => {
+              console.log(cryptoPriceMap);
+              console.log(asset.id);
+              console.log(cryptoPriceMap[asset.id]);
+              return asset.amount * cryptoPriceMap[asset.id];
+            })
+            .reduce((acc, val) => (acc += val), 0)
+            .toFixed(2)}
+          $
+        </Typography.Title>
+      )}
+    </Layout.Content>
+  );
 };
 
 export default AppContent;

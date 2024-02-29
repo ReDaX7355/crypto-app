@@ -14,7 +14,8 @@ export function transformNewAsset(
   targetCoin: ICrypto | undefined
 ) {
   return {
-    id: targetCoin?.name,
+    id: targetCoin?.id,
+    name: targetCoin?.name,
     amount: assetForm.amount,
     price: assetForm.price,
     totalAmount: assetForm.total && +assetForm.total,
