@@ -1,13 +1,15 @@
-import { Layout, Typography } from "antd";
-import { FC } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../context/store";
+import { Layout, Typography } from 'antd';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../context/store';
+import PortfolioChart from '../PortfolioChart';
+import AssetsTable from '../AssetsTable';
 
 const contentStyle: React.CSSProperties = {
-  padding: "1rem",
-  minHeight: "calc(100vh - 60px)",
-  color: "#fff",
-  backgroundColor: "#001529",
+  padding: '1rem',
+  minHeight: 'calc(100vh - 60px)',
+  color: '#fff',
+  backgroundColor: '#001529',
 };
 
 const AppContent: FC = () => {
@@ -24,13 +26,10 @@ const AppContent: FC = () => {
   return (
     <Layout.Content style={contentStyle}>
       {assets.data.length != 0 && (
-        <Typography.Title level={3} style={{ color: "#fff" }}>
-          Portfolio:{" "}
+        <Typography.Title level={3} style={{ color: '#fff' }}>
+          Portfolio:{' '}
           {assets.data
             .map((asset) => {
-              console.log(cryptoPriceMap);
-              console.log(asset.id);
-              console.log(cryptoPriceMap[asset.id]);
               return asset.amount * cryptoPriceMap[asset.id];
             })
             .reduce((acc, val) => (acc += val), 0)
@@ -38,6 +37,8 @@ const AppContent: FC = () => {
           $
         </Typography.Title>
       )}
+      <PortfolioChart />
+      <AssetsTable />
     </Layout.Content>
   );
 };

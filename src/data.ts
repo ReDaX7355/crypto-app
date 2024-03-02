@@ -597,20 +597,16 @@ export const cryptoData: ICrypto[] = [
 export const cryptoAssets: IAssets[] = [
   {
     id: 'bitcoin',
+    name: 'Bitcoin',
     amount: 0.02,
     price: 26244,
     date: '20.02.2024, 10:09:34',
   },
   {
     id: 'ethereum',
+    name: 'Ethereum',
     amount: 5,
     price: 3400,
     date: '25.02.2024, 19:45:53',
-  },
-  {
-    id: 'dogecoin',
-    amount: 10000,
-    price: 0.073,
-    date: '27.02.2024, 13:12:45',
   },
 ];
