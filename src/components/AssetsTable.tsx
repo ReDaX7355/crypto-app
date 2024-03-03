@@ -1,92 +1,68 @@
-import { Table } from 'antd';
-import type { TableColumnsType, TableProps } from 'antd';
+import { Table } from "antd";
+import type { TableColumnsType } from "antd";
+import { useSelector } from "react-redux";
+import { RootState } from "../context/store";
 
 interface DataType {
   key: React.Key;
   name: string;
-  chinese: number;
-  math: number;
-  english: number;
+  price: number;
+  amount: number;
 }
 
 const columns: TableColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Chinese Score',
-    dataIndex: 'chinese',
+    title: "Name",
+    dataIndex: "name",
     sorter: {
-      compare: (a, b) => a.chinese - b.chinese,
+      compare: (a, b) => {
+        if (a.name > b.name) {
+          return -1;
+        } else {
+          return 1;
+        }
+      },
       multiple: 3,
     },
+    showSorterTooltip: false,
+    defaultSortOrder: "descend",
   },
   {
-    title: 'Math Score',
-    dataIndex: 'math',
+    title: "Price $",
+    dataIndex: "price",
     sorter: {
-      compare: (a, b) => a.math - b.math,
+      compare: (a, b) => a.price - b.price,
       multiple: 2,
     },
   },
   {
-    title: 'English Score',
-    dataIndex: 'english',
+    title: "Amount",
+    dataIndex: "amount",
     sorter: {
-      compare: (a, b) => a.english - b.english,
+      compare: (a, b) => a.amount - b.amount,
       multiple: 1,
     },
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    chinese: 98,
-    math: 60,
-    english: 70,
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    chinese: 98,
-    math: 66,
-    english: 89,
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    chinese: 98,
-    math: 90,
-    english: 70,
-  },
-  {
-    key: '4',
-    name: 'Jim Red',
-    chinese: 88,
-    math: 99,
-    english: 89,
-  },
-];
-
-const onChange: TableProps<DataType>['onChange'] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log('params', pagination, filters, sorter, extra);
-};
-
 const AssetsTable = () => {
+  const assets = useSelector((state: RootState) => state.assets);
+
+  const data: DataType[] = assets.data.map((item, i) => {
+    return {
+      key: i,
+      name: item.name,
+      price: item.price,
+      amount: item.amount,
+    };
+  });
   return (
     <Table
+      style={{ flex: 1 }}
       columns={columns}
       dataSource={data}
-      onChange={onChange}
       pagination={false}
+      scroll={{ y: 250 }}
     />
   );
 };

@@ -1,13 +1,13 @@
-import { Layout } from 'antd';
-import AppHeader from './components/loyaut/AppHeader';
-import AppSider from './components/loyaut/AppSider';
-import AppContent from './components/loyaut/AppContent';
-import { useEffect, useLayoutEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadCrypto } from './context/cryptoSlice';
-import { AppDispatch, RootState } from './context/store';
-import Loader from './components/UI/Loader';
-import { loadAssets } from './context/assetsSlice';
+import { Layout } from "antd";
+import AppHeader from "./components/loyaut/AppHeader";
+import AppSider from "./components/loyaut/AppSider";
+import AppContent from "./components/loyaut/AppContent";
+import { useEffect, useLayoutEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadCrypto } from "./context/cryptoSlice";
+import { AppDispatch, RootState } from "./context/store";
+import Loader from "./components/UI/Loader";
+import { loadAssets } from "./context/assetsSlice";
 
 const App = () => {
   const { crypto, assets } = useSelector((state: RootState) => state);
@@ -21,7 +21,7 @@ const App = () => {
     dispatch(loadAssets());
   }, [dispatch]);
 
-  if (assets.loading == 'pending' && crypto.loading == 'pending')
+  if (assets.loading == "pending" && crypto.loading == "pending")
     return <Loader sizeSpinner={50} />;
 
   return (

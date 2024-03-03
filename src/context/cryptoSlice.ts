@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import ICrypto from "../types/ICrypto";
-import { fakeFetchCryptoData } from "../api";
+import { fetchCryptoData } from "../api";
 
 interface CryptoState {
   loading: string;
@@ -33,8 +33,10 @@ export const cryptoSlice = createSlice({
 });
 
 export const loadCrypto = createAsyncThunk("crypto/loadCrypto", async () => {
-  const response = await fakeFetchCryptoData();
-  return response;
+  const response = await fetchCryptoData();
+  const data = await response.json();
+  console.log(data);
+  return data.result;
 });
 
 export default cryptoSlice.reducer;

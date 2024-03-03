@@ -1,10 +1,18 @@
-import { cryptoAssets, cryptoData } from './data';
-import IAssets from './types/IAssets';
-import ICrypto from './types/ICrypto';
-import { getPercentFromTwoNumbers } from './utils';
+import { cryptoAssets, cryptoData } from "./data";
+import IAssets from "./types/IAssets";
+import ICrypto from "./types/ICrypto";
+import { getPercentFromTwoNumbers } from "./utils";
 
-export const fakeFetchCryptoData = (): Promise<ICrypto[]> => {
-  return new Promise((resolve) => setTimeout(() => resolve(cryptoData), 2000));
+export const fetchCryptoData = (): Promise<Response> => {
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      "X-API-KEY": "rZdjWNU6pFZ4upBb3PSTyqTtD+ivo/gjOMZxA7/XxdI=",
+    },
+  };
+
+  return fetch("https://openapiv1.coinstats.app/coins", options);
 };
 
 export const fetchAssets = (): Promise<IAssets[]> => {
@@ -27,7 +35,7 @@ export const fetchAssets = (): Promise<IAssets[]> => {
             };
           })
         ),
-      4000
+      1000
     )
   );
 };
