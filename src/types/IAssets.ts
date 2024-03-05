@@ -1,5 +1,6 @@
 export default interface IAssets {
   id: string;
+  id_coin: string;
   name: string;
   amount: number;
   price: number;

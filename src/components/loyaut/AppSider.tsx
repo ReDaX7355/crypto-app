@@ -9,10 +9,14 @@ import {
   Typography,
 } from 'antd';
 import { FC } from 'react';
-import { capitilize } from '../../utils';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  CloseOutlined,
+} from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../context/store';
+import { deleteAsset } from '../../context/assetsSlice';
 
 const siderStyle: React.CSSProperties = {
   padding: '1rem',
@@ -29,6 +33,28 @@ const AppSider: FC = () => {
   const { assets } = useSelector((state: RootState) => ({
     assets: state.assets,
   }));
+
+  console.log(assets);
+
+  const dispatch = useDispatch();
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteAsset(id));
+  };
+
+  if (assets.data.length < 1) {
+    return (
+      <Layout.Sider width="350px" style={siderStyle} className="sider">
+        <Typography.Title
+          level={2}
+          style={{ color: '#fff', textAlign: 'center' }}
+        >
+          Not assets yet
+        </Typography.Title>
+        ;
+      </Layout.Sider>
+    );
+  }
 
   if (assets.loading === 'pending') {
     return (
@@ -53,15 +79,24 @@ const AppSider: FC = () => {
         }}
       >
         {assets.data.map((asset, id) => (
-          <Card key={id.toString()} style={{ marginBottom: '1rem' }}>
-            <Statistic
-              title={capitilize(asset.id)}
-              value={asset.totalAmount}
-              precision={2}
-              valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
-              prefix={asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
-              suffix="$"
-            ></Statistic>
+          <Card key={id} style={{ marginBottom: '1rem' }}>
+            <Flex align="start" justify="space-between">
+              <Statistic
+                title={asset.name}
+                value={asset.totalAmount}
+                precision={2}
+                valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
+                prefix={
+                  asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />
+                }
+                suffix="$"
+              ></Statistic>
+              <CloseOutlined
+                className="close_button"
+                onClick={() => handleDelete(asset.id)}
+              />
+            </Flex>
+
             <List
               size="small"
               dataSource={[

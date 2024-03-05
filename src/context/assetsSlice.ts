@@ -19,6 +19,14 @@ export const assetsSlice = createSlice({
       state.data.push(action.payload);
       localStorage.setItem('assets', JSON.stringify(state.data));
     },
+    deleteAsset: (state, action) => {
+      state.data = state.data.filter((item) => item.id != action.payload);
+      if (state.data.length < 1) {
+        localStorage.removeItem('assets');
+      } else {
+        localStorage.setItem('assets', JSON.stringify(state.data));
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,6 +49,6 @@ export const loadAssets = createAsyncThunk('assets/loadAssets', async () => {
   return response;
 });
 
-export const { addAsset } = assetsSlice.actions;
+export const { addAsset, deleteAsset } = assetsSlice.actions;
 
 export default assetsSlice.reducer;

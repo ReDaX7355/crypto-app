@@ -26,6 +26,17 @@
   background: #555;
 }
 
+.close_button{
+  margin-top: 4px;
+  font-size: 17px;
+  transition: .3s ease;
+  cursor: pointer;
+}
+
+.close_button:hover{
+  color: #cf1322;
+}
+
 @media (max-width: 900px){
   .ant-layout.ant-layout-has-sider{
     flex-direction: column;

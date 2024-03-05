@@ -30,7 +30,7 @@ const AppContent: FC = () => {
           Portfolio:{' '}
           {assets.data
             .map((asset) => {
-              return asset.amount * cryptoPriceMap[asset.id];
+              return asset.amount * cryptoPriceMap[asset.id_coin];
             })
             .reduce((acc, val) => (acc += val), 0)
             .toFixed(2)}
