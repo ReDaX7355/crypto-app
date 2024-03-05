@@ -25,3 +25,20 @@
 *::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+@media (max-width: 900px){
+  .ant-layout.ant-layout-has-sider{
+    flex-direction: column;
+  }
+
+  .sider{
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .content{
+    width: 100% !important;
+  }
+}
