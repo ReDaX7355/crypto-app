@@ -17,6 +17,7 @@ export const assetsSlice = createSlice({
   reducers: {
     addAsset: (state, action) => {
       state.data.push(action.payload);
+      localStorage.setItem('assets', JSON.stringify(state.data));
     },
   },
   extraReducers: (builder) => {
