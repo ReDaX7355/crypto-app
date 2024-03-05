@@ -16,7 +16,7 @@ const columns: TableColumnsType<DataType> = [
     dataIndex: "name",
     sorter: {
       compare: (a, b) => {
-        if (a.name > b.name) {
+        if (a.name < b.name) {
           return -1;
         } else {
           return 1;
