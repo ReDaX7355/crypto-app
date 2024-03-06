@@ -1,23 +1,23 @@
-import { v4 as uuidv4 } from 'uuid';
-import { cryptoAssets } from './dataAssets';
-import IAssets from './types/IAssets';
-import ICrypto from './types/ICrypto';
-import { getPercentFromTwoNumbers } from './utils';
+import { v4 as uuidv4 } from "uuid";
+import { cryptoAssets } from "./dataAssets";
+import IAssets from "./types/IAssets";
+import ICrypto from "./types/ICrypto";
+import { getPercentFromTwoNumbers } from "./utils";
 
 export const fetchCryptoData = (): Promise<Response> => {
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
-      accept: 'application/json',
-      'X-API-KEY': 'rZdjWNU6pFZ4upBb3PSTyqTtD+ivo/gjOMZxA7/XxdI=',
+      accept: "application/json",
+      "X-API-KEY": "rZdjWNU6pFZ4upBb3PSTyqTtD+ivo/gjOMZxA7/XxdI=",
     },
   };
 
-  return fetch('https://openapiv1.coinstats.app/coins', options);
+  return fetch("https://openapiv1.coinstats.app/coins", options);
 };
 
 export const fetchAssets = (): Promise<IAssets[]> => {
-  const data = localStorage.getItem('assets');
+  const data = localStorage.getItem("assets");
 
   if (data) {
     return new Promise((resolve) => {
@@ -28,7 +28,6 @@ export const fetchAssets = (): Promise<IAssets[]> => {
       setTimeout(async () => {
         const response = await fetchCryptoData();
         const cryptoData = await response.json();
-        console.log(cryptoData);
         const result = cryptoAssets.map((asset) => {
           const coin =
             cryptoData.result.find(

@@ -7,25 +7,25 @@ import {
   Statistic,
   Tag,
   Typography,
-} from 'antd';
-import { FC } from 'react';
+} from "antd";
+import { FC } from "react";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
   CloseOutlined,
-} from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../context/store';
-import { deleteAsset } from '../../context/assetsSlice';
+} from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../context/store";
+import { deleteAsset } from "../../context/assetsSlice";
 
 const siderStyle: React.CSSProperties = {
-  padding: '1rem',
-  width: '100%',
+  padding: "1rem",
+  width: "100%",
 };
 
 const skeletonStyle: React.CSSProperties = {
-  backgroundColor: 'white',
-  padding: '40px 20px',
+  backgroundColor: "white",
+  padding: "40px 20px",
   borderRadius: 10,
 };
 
@@ -33,8 +33,6 @@ const AppSider: FC = () => {
   const { assets } = useSelector((state: RootState) => ({
     assets: state.assets,
   }));
-
-  console.log(assets);
 
   const dispatch = useDispatch();
 
@@ -47,7 +45,7 @@ const AppSider: FC = () => {
       <Layout.Sider width="350px" style={siderStyle} className="sider">
         <Typography.Title
           level={2}
-          style={{ color: '#fff', textAlign: 'center' }}
+          style={{ color: "#fff", textAlign: "center" }}
         >
           Not assets yet
         </Typography.Title>
@@ -56,10 +54,10 @@ const AppSider: FC = () => {
     );
   }
 
-  if (assets.loading === 'pending') {
+  if (assets.loading === "pending") {
     return (
       <Layout.Sider width="350px" style={siderStyle} className="sider">
-        <Flex vertical gap={20} style={{ height: '100%' }}>
+        <Flex vertical gap={20} style={{ height: "100%" }}>
           <Skeleton active style={skeletonStyle} />
           <Skeleton active style={skeletonStyle} />
           <Skeleton active style={skeletonStyle} />
@@ -73,19 +71,19 @@ const AppSider: FC = () => {
       <Flex
         vertical
         style={{
-          overflowY: 'auto',
-          maxHeight: 'calc(100vh - 100px)',
-          padding: '0 1rem 0 0',
+          overflowY: "auto",
+          maxHeight: "calc(100vh - 100px)",
+          padding: "0 1rem 0 0",
         }}
       >
         {assets.data.map((asset, id) => (
-          <Card key={id} style={{ marginBottom: '1rem' }}>
+          <Card key={id} style={{ marginBottom: "1rem" }}>
             <Flex align="start" justify="space-between">
               <Statistic
                 title={asset.name}
                 value={asset.totalAmount}
                 precision={2}
-                valueStyle={{ color: asset.grow ? '#3f8600' : '#cf1322' }}
+                valueStyle={{ color: asset.grow ? "#3f8600" : "#cf1322" }}
                 prefix={
                   asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />
                 }
@@ -101,15 +99,15 @@ const AppSider: FC = () => {
               size="small"
               dataSource={[
                 {
-                  title: 'Total Profit',
+                  title: "Total Profit",
                   value: asset.totalProfit,
-                  suffix: '$',
+                  suffix: "$",
                   withtag: true,
                 },
                 {
-                  title: 'Amount',
+                  title: "Amount",
                   value: asset.amount,
-                  suffix: '',
+                  suffix: "",
                   isPlane: true,
                 },
               ]}
@@ -117,9 +115,9 @@ const AppSider: FC = () => {
                 <List.Item>
                   <span>{item.title}</span>
                   <span>
-                    <Typography.Text type={asset.grow ? 'success' : 'danger'}>
+                    <Typography.Text type={asset.grow ? "success" : "danger"}>
                       {item.withtag && (
-                        <Tag color={asset.grow ? 'green' : 'red'}>
+                        <Tag color={asset.grow ? "green" : "red"}>
                           {asset.growPercent}%
                         </Tag>
                       )}
