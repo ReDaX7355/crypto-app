@@ -21,7 +21,7 @@ const PortfolioChart = () => {
     datasets: [
       {
         label: "Price ($)",
-        data: assets.map((item) => item.totalAmount),
+        data: assets.map((item) => item.totalAmount?.toFixed(2)),
         backgroundColor: [
           "rgba(255, 99, 132, 1)",
           "rgba(54, 162, 235, 1)",

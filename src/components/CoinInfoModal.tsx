@@ -1,6 +1,8 @@
 import { FC } from "react";
 import ICrypto from "../types/ICrypto";
 import { Divider, Flex, Tag, Typography } from "antd";
+import Link from "antd/es/typography/Link";
+import { RedditCircleFilled, XOutlined } from "@ant-design/icons";
 
 interface CoinInfoModalProps {
   coin: ICrypto | undefined;
@@ -19,7 +21,7 @@ const CoinInfoModal: FC<CoinInfoModalProps> = ({ coin }) => {
           ({coin?.symbol}) {coin?.name}
         </Typography.Title>
       </Flex>
-      <Divider />
+      <Divider style={{ margin: "15px 0" }} />
       <Typography.Paragraph>
         <Typography.Text strong>1 hour: </Typography.Text>
         <Tag
@@ -47,22 +49,43 @@ const CoinInfoModal: FC<CoinInfoModalProps> = ({ coin }) => {
         </Tag>
       </Typography.Paragraph>
       <Typography.Paragraph>
-        <Typography.Text strong>
-          Price: {coin?.price.toFixed(2)}$
-        </Typography.Text>
+        <Typography.Text>Price: {coin?.price.toFixed(2)}$</Typography.Text>
       </Typography.Paragraph>
       <Typography.Paragraph>
-        <Typography.Text strong>Price in BTC: {coin?.priceBtc}</Typography.Text>
+        <Typography.Text>Price in BTC: {coin?.priceBtc}</Typography.Text>
       </Typography.Paragraph>
       <Typography.Paragraph>
-        <Typography.Text strong>Market Cap: {coin?.marketCap}</Typography.Text>
+        <Typography.Text>Market Cap: {coin?.marketCap}</Typography.Text>
       </Typography.Paragraph>
       <Typography.Paragraph>
-        <Typography.Text strong>
+        <Typography.Text>
           Contract Adress:{" "}
           {coin?.contractAddress ? coin?.contractAddress : "None"}
         </Typography.Text>
       </Typography.Paragraph>
+      <Typography.Paragraph>
+        <Typography.Text>Website: </Typography.Text>
+        <Link href={coin?.websiteUrl}>{coin?.websiteUrl}</Link>
+      </Typography.Paragraph>
+      <Divider style={{ margin: "15px 0" }} />
+      <Flex gap={15}>
+        <Link
+          href={coin?.redditUrl}
+          title={coin?.redditUrl}
+          style={{ display: "flex", alignItems: "center", gap: 5 }}
+        >
+          <RedditCircleFilled style={{ color: "#ff4500", fontSize: "35px" }} />
+          Reddit
+        </Link>
+        <Link
+          href={coin?.twitterUrl}
+          title={coin?.twitterUrl}
+          style={{ display: "flex", alignItems: "center", gap: 5 }}
+        >
+          <XOutlined style={{ color: "#111", fontSize: "35px" }} />
+          Twitter
+        </Link>
+      </Flex>
     </>
   );
 };
