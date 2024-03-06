@@ -1,22 +1,9 @@
-import {
-  Card,
-  Flex,
-  Layout,
-  List,
-  Skeleton,
-  Statistic,
-  Tag,
-  Typography,
-} from "antd";
+import { Flex, Layout, Skeleton, Typography } from "antd";
 import { FC } from "react";
-import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../context/store";
 import { deleteAsset } from "../../context/assetsSlice";
+import AssetCard from "../AssetCard";
 
 const siderStyle: React.CSSProperties = {
   padding: "1rem",
@@ -44,7 +31,7 @@ const AppSider: FC = () => {
     return (
       <Layout.Sider width="350px" style={siderStyle} className="sider">
         <Typography.Title
-          level={2}
+          level={3}
           style={{ color: "#fff", textAlign: "center" }}
         >
           Not assets yet
@@ -66,69 +53,23 @@ const AppSider: FC = () => {
     );
   }
 
+  console.log("Sider render!");
+
   return (
     <Layout.Sider width="350px" style={siderStyle} className="sider">
+      <Typography.Title level={3} style={{ color: "#fff" }}>
+        Assets
+      </Typography.Title>
       <Flex
         vertical
         style={{
           overflowY: "auto",
-          maxHeight: "calc(100vh - 100px)",
+          maxHeight: "calc(100vh - 140px)",
           padding: "0 1rem 0 0",
         }}
       >
         {assets.data.map((asset, id) => (
-          <Card key={id} style={{ marginBottom: "1rem" }}>
-            <Flex align="start" justify="space-between">
-              <Statistic
-                title={asset.name}
-                value={asset.totalAmount}
-                precision={2}
-                valueStyle={{ color: asset.grow ? "#3f8600" : "#cf1322" }}
-                prefix={
-                  asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />
-                }
-                suffix="$"
-              ></Statistic>
-              <CloseOutlined
-                className="close_button"
-                onClick={() => handleDelete(asset.id)}
-              />
-            </Flex>
-
-            <List
-              size="small"
-              dataSource={[
-                {
-                  title: "Total Profit",
-                  value: asset.totalProfit,
-                  suffix: "$",
-                  withtag: true,
-                },
-                {
-                  title: "Amount",
-                  value: asset.amount,
-                  suffix: "",
-                  isPlane: true,
-                },
-              ]}
-              renderItem={(item) => (
-                <List.Item>
-                  <span>{item.title}</span>
-                  <span>
-                    <Typography.Text type={asset.grow ? "success" : "danger"}>
-                      {item.withtag && (
-                        <Tag color={asset.grow ? "green" : "red"}>
-                          {asset.growPercent}%
-                        </Tag>
-                      )}
-                      {item.isPlane && item.value + item.suffix}
-                      {!item.isPlane && item.value?.toFixed(2) + item.suffix}
-                    </Typography.Text>
-                  </span>
-                </List.Item>
-              )}
-            />
-          </Card>
+          <AssetCard key={id} asset={asset} deleteCard={handleDelete} />
         ))}
       </Flex>
     </Layout.Sider>

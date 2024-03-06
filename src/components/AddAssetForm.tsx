@@ -144,7 +144,7 @@ const AddAssetForm: FC<AddAssetFormProps> = ({ onCloseDrawer }) => {
             required: true,
             type: "number",
             min: 0.00001,
-            max: +coin.marketCap.toFixed(0),
+            max: coin.marketCap,
           },
         ]}
       >
