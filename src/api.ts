@@ -21,7 +21,31 @@ export const fetchAssets = (): Promise<IAssets[]> => {
 
   if (data) {
     return new Promise((resolve) => {
-      setTimeout(() => resolve(JSON.parse(data)), 1000);
+      setTimeout(
+        async () => {
+          const assets = JSON.parse(data);
+          const response = await fetchCryptoData();
+          const cryptoData = await response.json();
+          const result = assets.map((asset: IAssets) => {
+            const coin =
+              cryptoData.result.find(
+                (item: ICrypto) => item.id === asset.id_coin
+              ) || ({} as ICrypto);
+            return {
+              ...asset,
+              grow: asset.price < coin.price,
+              growPercent: getPercentFromTwoNumbers(asset.price, coin.price),
+              totalAmount: asset.amount * coin.price,
+              totalProfit:
+                asset.amount * coin.price - asset.amount * asset.price,
+              name: asset.name ? asset.name : coin.name,
+            };
+          });
+          resolve(result);
+        },
+
+        1000
+      );
     });
   } else {
     return new Promise((resolve) =>
