@@ -19,6 +19,6 @@
 ## Используемый стек
 
 - React
-- Antd Design
+- Ant Design
 - Redux Toolkit
 - react-chartjs-2
