@@ -1,20 +1,20 @@
-import { Button, Drawer, Flex, Layout, Modal, Select, Space } from 'antd';
-import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../context/store';
-import CoinInfoModal from '../CoinInfoModal';
-import ICrypto from '../../types/ICrypto';
-import AddAssetForm from '../AddAssetForm';
+import { Button, Drawer, Flex, Layout, Modal, Select, Space } from "antd";
+import { FC, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../context/store";
+import CoinInfoModal from "../CoinInfoModal";
+import ICrypto from "../../types/ICrypto";
+import AddAssetForm from "../AddAssetForm";
 
 const headerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
+  textAlign: "center",
+  color: "#fff",
   height: 60,
   paddingInline: 48,
-  lineHeight: '64px',
-  backgroundColor: '#40a6ff',
-  display: 'flex',
-  alignItems: 'center',
+  lineHeight: "64px",
+  backgroundColor: "#40a6ff",
+  display: "flex",
+  alignItems: "center",
 };
 
 const AppHeader: FC = () => {
@@ -26,14 +26,14 @@ const AppHeader: FC = () => {
 
   useEffect(() => {
     const openSelect = (event: KeyboardEvent) => {
-      if (event.code == 'Slash') {
+      if (event.code == "Slash") {
         setOnOpenSelect((prev) => !prev);
       }
     };
-    document.addEventListener('keypress', openSelect);
+    document.addEventListener("keypress", openSelect);
 
     return () => {
-      document.removeEventListener('keypress', openSelect);
+      document.removeEventListener("keypress", openSelect);
     };
   }, []);
 
@@ -53,20 +53,23 @@ const AppHeader: FC = () => {
 
   return (
     <Layout.Header style={headerStyle}>
-      <Flex style={{ width: '100%' }} justify="space-between" align="center">
+      <Flex style={{ width: "100%" }} justify="space-between" align="center">
         <Select
           placeholder={`Select coin (press "/")`}
           open={onOpenSelect}
           style={{ width: 200 }}
           onClick={handleChangeSelect}
           onSelect={handleSelect}
-          options={crypto.data.map((item) => {
-            return {
-              icon: item.icon,
-              value: item.id,
-              label: item.name,
-            };
-          })}
+          options={
+            crypto.data &&
+            crypto.data.map((item) => {
+              return {
+                icon: item.icon,
+                value: item.id,
+                label: item.name,
+              };
+            })
+          }
           optionRender={(option) => (
             <Space>
               <img

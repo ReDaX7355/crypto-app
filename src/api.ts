@@ -12,7 +12,6 @@ export const fetchCryptoData = (): Promise<Response> => {
       "X-API-KEY": "Yem3IZrcPswA1ho+s7YlEHISw/1gYyCkc0vNqIVb9F4=",
     },
   };
-
   return fetch("https://openapiv1.coinstats.app/coins", options);
 };
 
