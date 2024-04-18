@@ -9,7 +9,7 @@ export const fetchCryptoData = (): Promise<Response> => {
     method: "GET",
     headers: {
       accept: "application/json",
-      "X-API-KEY": "rZdjWNU6pFZ4upBb3PSTyqTtD+ivo/gjOMZxA7/XxdI=",
+      "X-API-KEY": "Yem3IZrcPswA1ho+s7YlEHISw/1gYyCkc0vNqIVb9F4=",
     },
   };
 
